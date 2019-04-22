@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h4 #{novel.novelTitle}
+  p(style="white-space:pre;") #{novel.novelText}
+  p 作者: #{novel.user.username}
+  h3 感想
+  table
+    tr
+      th 作品向上のヒント
+      each user in users
+        th #{user.username}
+    each question in questions
+      tr
+        th #{question.questionName}
+        each user in users
+          td
+            button good

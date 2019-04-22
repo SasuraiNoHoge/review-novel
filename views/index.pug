@@ -3,3 +3,25 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  div
+    if user
+      div
+        a(href="/logout") #{user.username} をログアウト
+      div
+        a(href="/novels/new") 小説を投稿する
+      - var hasNovel = novels.length > 0
+      if hasNovel
+        h3 小説一覧
+        table.table
+          tr
+            th タイトル
+            th 更新日時
+          each novel in novels
+            tr
+              td
+                a(href=`/novels/${novel.novelId}`) #{novel.novelTitle}
+              td #{novel.updatedAt}
+
+    else
+      div
+        a(href="/login") ログイン
