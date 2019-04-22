@@ -33,8 +33,8 @@ var GitHubStrategy = require('passport-github2').Strategy;
 var GITHUB_CLIENT_ID = '2f831cb3d4aaXXXXXXXXX';
 var GITHUB_CLIENT_SECRET = '9fbc340ac0175123695d2dedfbdf5aXXXXXXXXX';
 var TwitterStrategy = require('passport-twitter').Strategy;
-var CONSUMER_KEY = process.env.CONSUMER_KEY || 'GpCgDxYLAG6VFMAplal4wZsJg';
-var CONSUMER_SECRET = process.env.CONSUMER_SECRET || 'wrnCGBrj6F5Fu6lW1WhB05wZc278bEVAPGwpLRfntdjufXtqg3';
+var CONSUMER_KEY = process.env.CONSUMER_KEY || '';
+var CONSUMER_SECRET = process.env.CONSUMER_SECRET || '';
 
 passport.serializeUser(function (user, done) {
   done(null, user);
