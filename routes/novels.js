@@ -74,6 +74,7 @@ router.get('/:novelId', authenticationEnsurer, (req, res, next) => {
         where: { novelId: novel.novelId },
         order: [['"questionId"', 'ASC']]
       }).then((questions) => {
+        // データベースからその予定の全ての出欠を取得する
         Evaluation.findAll({
           include: [
             {
@@ -82,8 +83,26 @@ router.get('/:novelId', authenticationEnsurer, (req, res, next) => {
             }
           ],
           where: { novelId: novel.novelId },
-          order: [[User, 'username', 'ASC'], ['"novelId"', 'ASC']]
-        })
+          order: [[User, 'username', 'ASC'], ['"questionId"', 'ASC']]
+        }).then((evaluations) => {
+          // 出欠 MapMap(キー:ユーザー ID, 値:出欠Map(キー:候補 ID, 値:出欠)) を作成する
+          const EvaluationMapMap = new Map(); // key: userId, value: Map(key: questionId, availability)
+          evaluations.forEach((e) => {
+            const map = evaluationMapMap.get(e.user.userId) || new Map();
+            map.set(e.questionId, e.evaluation);
+            evaluationMapMap.set(e.user.userId, map);
+          });
+
+          console.log(evaluationMapMap); // TODO 除去する
+
+          res.render('novel', {
+            user: req.user,
+            novel: novel,
+            questions: questions,
+            users: [req.user],
+            evaluationMapMap: evaluationMapMap
+          });
+        });
       });
     } else {
       const err = new Error('指定されたページは見つかりません');
